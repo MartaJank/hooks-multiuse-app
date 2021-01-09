@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { Switch, Route } from "react-router-dom";
+
 import Accordion from "./components/Accordion";
 import Search from "./components/Search";
 import Dropdown from "./components/Dropdown";
 import Translate from "./components/Translate";
+import Navbar from "./components/Navbar";
 
 const items = [
   {
@@ -36,24 +39,32 @@ const options = [
 
 const App = () => {
   const [selected, setSelected] = useState(options[0]);
-  const [showDropdown, setShowDropdown] = useState(true);
 
   return (
     <div>
-      {/* <Accordion items={items} /> */}
-      {/* <Search /> */}
-      {/* <button onClick={() => setShowDropdown(!showDropdown)}>
-        Toggle Dropdown
-      </button>
-      {showDropdown ? (
-        <Dropdown
-        label="Select a Color"
-          selected={selected}
-          onSelectedChange={setSelected}
-          options={options}
+      <Navbar />
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={(props) => <Accordion {...props} items={items} />}
         />
-      ) : null} */}
-      <Translate />
+        <Route exact path="/search" component={Search} />
+        <Route
+          exact
+          path="/dropdown"
+          render={(props) => (
+            <Dropdown
+              {...props}
+              label="Select a Color"
+              selected={selected}
+              onSelectedChange={setSelected}
+              options={options}
+            />
+          )}
+        />
+        <Route exact path="/translate" component={Translate} />
+      </Switch>
     </div>
   );
 };
